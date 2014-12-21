@@ -37,6 +37,15 @@ class TestHostlistsExpand(unittest.TestCase):
             self.assertIsInstance(result, list)
             self.assertListEqual(result, self.expected_result)
 
+    class base_test_compress_list_input(unittest.TestCase):
+        hosts_list = ['localhost']
+        expected_result = ['localhost']
+
+        def __init__(self):
+            result = hostlists.compress(self.hosts_list)
+            self.assertIsInstance(result, list)
+            self.assertListEqual(result, self.expected_result)
+
     class test_expand__string_input__single_host(base_test_expand_string_input):
         """ Expand a string with a single host
         """
@@ -81,6 +90,21 @@ class TestHostlistsExpand(unittest.TestCase):
         def tearDown(self):
             if self.tfile:
                 os.remove(self.tfile.name)
+
+    class test_compress__list_input__single_host(base_test_compress_list_input):
+        """ Expand a string with a single host
+        """
+        hosts_list = ['localhost']
+        expected_result = ['localhost']
+
+    class test_compress__list_input__multiple_host(
+        base_test_compress_list_input
+    ):
+        """
+        Expand a string containing multiple comma seperated hosts
+        """
+        hosts_list = ['localhost', 'foobar']
+        expected_result = ['foobar', 'localhost']
 
 
 if __name__ == '__main__':
